@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF Viewer</title>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+</head>
+<body>
+  <canvas id="pdf-canvas"></canvas>
+  <script>
+    var url = 'https://raw.githubusercontent.com/knadikari/Stock/refs/heads/main/TILE%202024-2025.pdf';
+
+    var loadingTask = pdfjsLib.getDocument(url);
+    loadingTask.promise.then(function(pdf) {
+      pdf.getPage(1).then(function(page) {
+        var scale = 1.5;
+        var viewport = page.getViewport({ scale: scale });
+        var canvas = document.getElementById('pdf-canvas');
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        var renderContext = { canvasContext: context, viewport: viewport };
+        page.render(renderContext);
+      });
+    });
+  </script>
+</body>
+</html>
